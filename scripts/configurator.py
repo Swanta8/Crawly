@@ -1,0 +1,57 @@
+import re
+from playwright.sync_api import Playwright, sync_playwright, expect
+
+
+def run(playwright: Playwright) -> None:
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    page.goto("https://www.keypro.nl/configurator/")
+    page.get_by_text("Instellen", exact=True).click()
+    page.get_by_text("Weigeren", exact=True).click()
+    page.get_by_role("textbox", name="Postcode").click()
+    page.get_by_role("textbox", name="Postcode").fill("9723TH")
+    page.get_by_role("button", name="Zoeken").click()
+    page.get_by_text("Stel Premium-pakket samen").click()
+    page.get_by_role("button", name="").first.click()
+    page.get_by_role("button", name="").nth(1).click()
+    page.get_by_role("button", name="").nth(2).click()
+    page.get_by_text("Volgende").click()
+    page.locator("#configurator-1").get_by_text("Stel pakket samen").click()
+    page.get_by_role("link", name="Direct bestellen").click()
+    page.get_by_role("textbox", name="E-mailadres*").click()
+    page.get_by_role("textbox", name="E-mailadres*").fill("jimme@keypro.nl")
+    page.locator("#phone").click()
+    page.locator("#phone").fill("621654470")
+    page.get_by_role("textbox", name="Initialen*").click()
+    page.get_by_role("textbox", name="Initialen*").fill("J.D.")
+    page.get_by_role("textbox", name="Voornaam*").click()
+    page.get_by_role("textbox", name="Voornaam*").fill("Jimme")
+    page.get_by_role("textbox", name="Achternaam*").click()
+    page.get_by_role("textbox", name="Achternaam*").fill("TEST")
+    page.get_by_role("textbox", name="Bedrijfsnaam").click()
+    page.get_by_role("textbox", name="Bedrijfsnaam").fill("KeyPro")
+    page.get_by_role("textbox", name="Startdatum*").click()
+    page.get_by_role("textbox", name="Startdatum*").fill("03-08-2026")
+    page.get_by_role("textbox", name="Straat*").click()
+    page.get_by_role("textbox", name="Straat*").fill("Rigaweg")
+    page.get_by_role("textbox", name="Nummer*").click()
+    page.get_by_role("textbox", name="Nummer*").fill("12")
+    page.get_by_role("textbox", name="Postcode*").click()
+    page.get_by_role("textbox", name="Postcode*").click()
+    page.get_by_role("textbox", name="Postcode*").fill("9723TH")
+    page.get_by_role("textbox", name="Plaats*").click()
+    page.get_by_role("textbox", name="Plaats*").fill("Groningen")
+    page.get_by_role("textbox", name="Opmerking").click()
+    page.get_by_role("textbox", name="Opmerking").fill("Dit is een test uitgevoerd door de Playwright Script Manager")
+    page.get_by_role("button", name="Offerte aanvragen").click()
+    page.goto("https://www.keypro.nl/offerte-aanvraag-verstuurd/")
+    page.close()
+
+    # ---------------------
+    context.close()
+    browser.close()
+
+
+with sync_playwright() as playwright:
+    run(playwright)
